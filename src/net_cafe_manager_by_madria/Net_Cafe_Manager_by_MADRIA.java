@@ -10,11 +10,9 @@ package net_cafe_manager_by_madria;
  */
 public class Net_Cafe_Manager_by_MADRIA {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public static void main(String[] args) {
+    // This calls the bridge we built earlier
+    DatabaseConnection.connect();
+}
     
 }
