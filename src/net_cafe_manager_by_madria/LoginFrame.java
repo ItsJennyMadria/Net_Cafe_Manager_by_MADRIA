@@ -90,8 +90,8 @@ try (java.sql.Connection conn = DatabaseConnection.connect()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Welcome back, " + userName + "!");
 
         // 2. Open the Dashboard and pass the info
-        // Note: You must have created DashboardFrame.java first!
-        DashboardFrame dash = new DashboardFrame(userRole, userName); 
+        // Note: You must have created DashBoardFrame.java first!
+        DashBoardFrame dash = new DashBoardFrame(userRole, userName); 
         dash.setVisible(true);
 
         // 3. Close the Login screen

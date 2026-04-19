@@ -8,33 +8,54 @@ package net_cafe_manager_by_madria;
  *
  * @author Dell
  */
-
 public class DashBoardFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DashBoardFrame
-     */
-    // Global variables (These go above the constructor)
-    String role; 
+    String role;
     String username;
 
-    public DashBoardFrame(String userRole, String userName) { 
-        initComponents(); // This MUST be the first line
+    public DashBoardFrame(String userRole, String userName) {
+        initComponents();
         setLocationRelativeTo(null);
-        
+
         this.role = userRole;
         this.username = userName;
 
-        // Check if the system should hide Admin powers
+        // 1. Just CALL the method here
+        loadUserData();
+
         if (role != null && !role.equalsIgnoreCase("Admin")) {
-            btnDelete.setEnabled(false); // Gray out the delete button
-            btnDelete.setVisible(false); // Hide it completely
+            btnDelete.setEnabled(false);
+            btnDelete.setVisible(false);
         }
 
-        // Set a label to show who is logged in
         lblWelcome.setText("Welcome, " + username + " (" + role + ")");
     }
 
+    // 2. The actual METHOD goes HERE (outside the constructor)
+    private void loadUserData() {
+        try (java.sql.Connection conn = DatabaseConnection.connect()) {
+            String sql = "SELECT USER_NAME, User_BALANCE, ROLE, MEMBER_STATUS FROM users";
+            java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+            java.sql.ResultSet rs = pstmt.executeQuery();
+
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUsers.getModel();
+            model.setRowCount(0);
+            model.setColumnIdentifiers(new String[]{"Username", "Balance", "Role", "Status"});
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("USER_NAME"),
+                    rs.getDouble("User_BALANCE"),
+                    rs.getString("ROLE"),
+                    rs.getString("MEMBER_STATUS")
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading table: " + e.getMessage());
+        }
+    }
+
+    // ... rest of your code (initComponents, btnDeleteActionPerformed, etc.)
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,6 +67,8 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         lblWelcome = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUsers = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -53,8 +76,9 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         lblWelcome.setFont(new java.awt.Font("Lucida Fax", 1, 36)); // NOI18N
         lblWelcome.setForeground(new java.awt.Color(204, 204, 204));
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblWelcome.setText("jLabel2");
-        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
+        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, -1, -1));
 
         btnDelete.setText("DELETE");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -63,6 +87,21 @@ public class DashBoardFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
+
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblUsers);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 360, 250));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/For DASHBOARD.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -73,30 +112,44 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        // Ask for confirmation first
-int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
-    "Are you sure you want to delete account: " + username + "?", 
-    "Confirm Deletion", javax.swing.JOptionPane.YES_NO_OPTION);
+        // 1. Check if a row is actually clicked
+        int selectedRow = tblUsers.getSelectedRow();
 
-if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-    try (java.sql.Connection conn = DatabaseConnection.connect()) {
-        // SQL Command to remove the user
-        String sql = "DELETE FROM users WHERE USER_NAME = ?";
-        java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, username);
-
-        int deleted = pstmt.executeUpdate();
-
-        if (deleted > 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Account Deleted successfully.");
-            // Send them back to Login screen
-            new LoginFrame().setVisible(true);
-            this.dispose();
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a user from the table first!");
+            return;
         }
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-}
+
+        // 2. Get the username from the first column (index 0) of that row
+        String userToDelete = tblUsers.getValueAt(selectedRow, 0).toString();
+
+        // 3. Don't let the admin accidentally delete themselves!
+        if (userToDelete.equals(this.username)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "You cannot delete your own account while logged in!");
+            return;
+        }
+
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete: " + userToDelete + "?",
+                "Confirm Deletion", javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            try (java.sql.Connection conn = DatabaseConnection.connect()) {
+                String sql = "DELETE FROM users WHERE USER_NAME = ?";
+                java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, userToDelete);
+
+                int deleted = pstmt.executeUpdate();
+
+                if (deleted > 0) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "User removed successfully.");
+                    loadUserData(); // REFRESH the table so they disappear
+                }
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
@@ -126,6 +179,8 @@ if (confirm == javax.swing.JOptionPane.YES_OPTION) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblWelcome;
+    private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
 }
