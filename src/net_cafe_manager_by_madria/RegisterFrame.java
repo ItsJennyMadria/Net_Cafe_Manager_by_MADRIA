@@ -35,6 +35,7 @@ public class RegisterFrame extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,6 +57,15 @@ public class RegisterFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 0));
+        jButton1.setText("BACK TO LOGIN");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 220, 40));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/NET CAFE BACKGROUND GIF resized.gif"))); // NOI18N
@@ -90,6 +100,12 @@ if (user.equals("") || pass.equals("")) {
     }
 }  
     }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new LoginFrame().setVisible(true);
+this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,6 +144,7 @@ if (user.equals("") || pass.equals("")) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegister;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;

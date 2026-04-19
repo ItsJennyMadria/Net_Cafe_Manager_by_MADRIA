@@ -15,6 +15,7 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     public LoginFrame() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -29,12 +30,13 @@ public class LoginFrame extends javax.swing.JFrame {
         txtUser = new javax.swing.JTextField();
         txtPass = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 240, 30));
-        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 240, 30));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, 240, 30));
+        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 170, 240, 30));
 
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -42,11 +44,20 @@ public class LoginFrame extends javax.swing.JFrame {
                 btnLoginActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, 100, 30));
+        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 210, 100, 30));
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 0));
+        jButton1.setText("CREATE AN ACCOUNT");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 300, 200, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/LOGIN NGA GIF (1).gif"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 749, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -79,6 +90,18 @@ try (java.sql.Connection conn = DatabaseConnection.connect()) {
     javax.swing.JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
 }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        // 1. Create the Register screen
+RegisterFrame register = new RegisterFrame();
+
+// 2. Make it visible
+register.setVisible(true);
+
+// 3. Close the current Login screen
+this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,6 +140,7 @@ try (java.sql.Connection conn = DatabaseConnection.connect()) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
