@@ -8,14 +8,31 @@ package net_cafe_manager_by_madria;
  *
  * @author Dell
  */
+
 public class DashBoardFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form DashBoardFrame
      */
-    public DashBoardFrame() {
-        initComponents();
+    // Global variables (These go above the constructor)
+    String role; 
+    String username;
+
+    public DashBoardFrame(String userRole, String userName) { 
+        initComponents(); // This MUST be the first line
         setLocationRelativeTo(null);
+        
+        this.role = userRole;
+        this.username = userName;
+
+        // Check if the system should hide Admin powers
+        if (role != null && !role.equalsIgnoreCase("Admin")) {
+            btnDelete.setEnabled(false); // Gray out the delete button
+            btnDelete.setVisible(false); // Hide it completely
+        }
+
+        // Set a label to show who is logged in
+        lblWelcome.setText("Welcome, " + username + " (" + role + ")");
     }
 
     /**
@@ -27,30 +44,25 @@ public class DashBoardFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
+        lblWelcome = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.add(jPanel5);
+        lblWelcome.setFont(new java.awt.Font("Lucida Fax", 1, 36)); // NOI18N
+        lblWelcome.setForeground(new java.awt.Color(204, 204, 204));
+        lblWelcome.setText("jLabel2");
+        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 120, 120));
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 120, 120));
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, 120, 120));
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 120, 120));
-        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 120, 120));
-        getContentPane().add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 120, 120));
-        getContentPane().add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, 120, 120));
-        getContentPane().add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 120, 120));
+        btnDelete.setText("DELETE");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/For DASHBOARD.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -59,15 +71,39 @@ public class DashBoardFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        // Ask for confirmation first
+int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+    "Are you sure you want to delete account: " + username + "?", 
+    "Confirm Deletion", javax.swing.JOptionPane.YES_NO_OPTION);
+
+if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+    try (java.sql.Connection conn = DatabaseConnection.connect()) {
+        // SQL Command to remove the user
+        String sql = "DELETE FROM users WHERE USER_NAME = ?";
+        java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+
+        int deleted = pstmt.executeUpdate();
+
+        if (deleted > 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Account Deleted successfully.");
+            // Send them back to Login screen
+            new LoginFrame().setVisible(true);
+            this.dispose();
+        }
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+}
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -75,35 +111,21 @@ public class DashBoardFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DashBoardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DashBoardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DashBoardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(DashBoardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DashBoardFrame().setVisible(true);
+                new DashBoardFrame("Admin", "TestUser").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel lblWelcome;
     // End of variables declaration//GEN-END:variables
 }

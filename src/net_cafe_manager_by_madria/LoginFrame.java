@@ -83,8 +83,19 @@ try (java.sql.Connection conn = DatabaseConnection.connect()) {
     java.sql.ResultSet rs = pstmt.executeQuery();
 
     if (rs.next()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Welcome back to Cloud Nook!");
-        // Later we will open the Dashboard here
+        // 1. Grab the ROLE and USERNAME from the database result
+        String userRole = rs.getString("ROLE");
+        String userName = rs.getString("USER_NAME");
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Welcome back, " + userName + "!");
+
+        // 2. Open the Dashboard and pass the info
+        // Note: You must have created DashboardFrame.java first!
+        DashboardFrame dash = new DashboardFrame(userRole, userName); 
+        dash.setVisible(true);
+
+        // 3. Close the Login screen
+        this.dispose(); 
     } else {
         javax.swing.JOptionPane.showMessageDialog(this, "Incorrect username or password.");
     }
