@@ -1,21 +1,7 @@
 package net_cafe_manager_by_madria;
 
-
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-/**
- *
- * @author Dell
- */
 public class RegisterFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RegisterFrame
-     */
     public RegisterFrame() {
         initComponents();
         setLocationRelativeTo(null);
@@ -33,44 +19,43 @@ public class RegisterFrame extends javax.swing.JFrame {
         txtUser = new javax.swing.JTextField();
         btnRegister = new javax.swing.JButton();
         txtPass = new javax.swing.JPasswordField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 270, 40));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 270, 30));
 
+        btnRegister.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnRegister.setText("REGISTER");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegisterActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 180, 30));
-        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 270, 40));
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("CLOUD NOOK\nyour 24/7 internet cafe corner");
-        jTextArea1.setOpaque(false);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+        getContentPane().add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 180, 30));
+        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 270, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 0));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("BACK TO LOGIN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 220, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 220, 40));
+
+        jLabel2.setFont(new java.awt.Font("Lucida Fax", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(224, 247, 250));
+        jLabel2.setText("CLOUD NOOK");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 360, 60));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/NET CAFE BACKGROUND GIF resized.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, 0, 750, 410));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -91,7 +76,7 @@ if (user.equals("") || pass.equals("")) {
         pstmt.executeUpdate();
         javax.swing.JOptionPane.showMessageDialog(this, "Success! Account is ready.");
         
-        // Clear the fields for the next person
+        
         txtUser.setText("");
         txtPass.setText("");
         
@@ -102,14 +87,11 @@ if (user.equals("") || pass.equals("")) {
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
         new LoginFrame().setVisible(true);
 this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -141,13 +123,12 @@ this.dispose();
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegister;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
