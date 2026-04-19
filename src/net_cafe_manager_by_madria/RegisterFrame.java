@@ -30,40 +30,50 @@ public class RegisterFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtUser = new javax.swing.JTextField();
+        btnRegister = new javax.swing.JButton();
+        txtPass = new javax.swing.JPasswordField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 270, 40));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 270, 40));
 
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 180, 30));
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 270, 40));
+        getContentPane().add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 180, 30));
+        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 270, 40));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("CLOUD NOOK\nyour 24/7 internet cafe corner");
+        jTextArea1.setOpaque(false);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/NET CAFE BACKGROUND GIF resized.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 420));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, 0, 750, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-String user = jTextField1.getText();
-String pass = new String(jPasswordField1.getPassword());
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+String user = txtUser.getText();
+String pass = new String(txtPass.getPassword());
 
 if (user.equals("") || pass.equals("")) {
     javax.swing.JOptionPane.showMessageDialog(this, "Wait! You forgot to type something.");
 } else {
     try (java.sql.Connection conn = DatabaseConnection.connect()) {
-        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO users (USER_NAME, PASSWORD) VALUES (?, ?)";
         java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, user);
         pstmt.setString(2, pass);
@@ -72,14 +82,14 @@ if (user.equals("") || pass.equals("")) {
         javax.swing.JOptionPane.showMessageDialog(this, "Success! Account is ready.");
         
         // Clear the fields for the next person
-        jTextField1.setText("");
-        jPasswordField1.setText("");
+        txtUser.setText("");
+        txtPass.setText("");
         
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
     }
-}        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+}  
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,9 +127,11 @@ if (user.equals("") || pass.equals("")) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }
