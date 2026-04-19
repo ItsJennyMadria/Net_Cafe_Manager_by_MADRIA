@@ -26,16 +26,23 @@ public class LoginFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        txtUser = new javax.swing.JTextField();
+        txtPass = new javax.swing.JPasswordField();
+        btnLogin = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 240, 30));
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 240, 30));
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, 100, 30));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 240, 30));
+        getContentPane().add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 240, 30));
+
+        btnLogin.setText("LOGIN");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, 100, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/LOGIN NGA GIF (1).gif"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -43,6 +50,35 @@ public class LoginFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+         String user = txtUser.getText();
+String pass = new String(txtPass.getPassword());
+
+if (user.isEmpty() || pass.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Enter your username and password!");
+    return;
+}
+
+try (java.sql.Connection conn = DatabaseConnection.connect()) {
+    // We use SELECT to see if a user with this exact name and pass exists
+    String sql = "SELECT * FROM users WHERE USER_NAME = ? AND PASSWORD = ?";
+    java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1, user);
+    pstmt.setString(2, pass);
+
+    java.sql.ResultSet rs = pstmt.executeQuery();
+
+    if (rs.next()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Welcome back to Cloud Nook!");
+        // Later we will open the Dashboard here
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Incorrect username or password.");
+    }
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+}
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -80,9 +116,9 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }
