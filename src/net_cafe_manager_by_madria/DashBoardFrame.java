@@ -20,15 +20,13 @@ public class DashBoardFrame extends javax.swing.JFrame {
         this.role = userRole;
         this.username = userName;
 
-        // 1. Just CALL the method here
         loadUserData();
 
-        if (role != null && !role.equalsIgnoreCase("Admin")) {
-            btnDelete.setEnabled(false);
-            btnDelete.setVisible(false);
-        }
+        // REMOVED: The code that hides the delete button for non-admins
+        btnDelete.setVisible(true);
+        btnDelete.setText("DELETE MY ACCOUNT");
 
-        lblWelcome.setText("Welcome, " + username + " (" + role + ")");
+        lblWelcome.setText("Welcome, " + username);
     }
 
     // 2. The actual METHOD goes HERE (outside the constructor)
@@ -69,6 +67,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
+        btnAddBalance = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,7 +77,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
         lblWelcome.setForeground(new java.awt.Color(204, 204, 204));
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblWelcome.setText("jLabel2");
-        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, -1, -1));
+        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
         btnDelete.setText("DELETE");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +85,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, -1));
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -103,6 +102,14 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 360, 250));
 
+        btnAddBalance.setText("TOPUP");
+        btnAddBalance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddBalanceActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAddBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/For DASHBOARD.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, -4, 670, 400));
@@ -112,38 +119,21 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        // 1. Check if a row is actually clicked
-        int selectedRow = tblUsers.getSelectedRow();
-
-        if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please select a user from the table first!");
-            return;
-        }
-
-        // 2. Get the username from the first column (index 0) of that row
-        String userToDelete = tblUsers.getValueAt(selectedRow, 0).toString();
-
-        // 3. Don't let the admin accidentally delete themselves!
-        if (userToDelete.equals(this.username)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "You cannot delete your own account while logged in!");
-            return;
-        }
-
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete: " + userToDelete + "?",
+                "Are you sure you want to permanently delete your account?",
                 "Confirm Deletion", javax.swing.JOptionPane.YES_NO_OPTION);
 
         if (confirm == javax.swing.JOptionPane.YES_OPTION) {
             try (java.sql.Connection conn = DatabaseConnection.connect()) {
                 String sql = "DELETE FROM users WHERE USER_NAME = ?";
                 java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, userToDelete);
+                pstmt.setString(1, this.username); // Deletes YOU
 
                 int deleted = pstmt.executeUpdate();
-
                 if (deleted > 0) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "User removed successfully.");
-                    loadUserData(); // REFRESH the table so they disappear
+                    javax.swing.JOptionPane.showMessageDialog(this, "Account deleted. Goodbye!");
+                    new LoginFrame().setVisible(true); // Send back to login
+                    this.dispose();
                 }
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
@@ -151,6 +141,31 @@ public class DashBoardFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnAddBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBalanceActionPerformed
+        // TODO add your handling code here:
+        String input = javax.swing.JOptionPane.showInputDialog(this, "How much balance to add?");
+
+        if (input != null && !input.isEmpty()) {
+            try (java.sql.Connection conn = DatabaseConnection.connect()) {
+                // We use '+' in SQL to add to the existing balance
+                String sql = "UPDATE users SET User_BALANCE = User_BALANCE + ? WHERE USER_NAME = ?";
+                java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+
+                pstmt.setDouble(1, Double.parseDouble(input));
+                pstmt.setString(2, this.username); // Always updates the logged-in user
+
+                pstmt.executeUpdate();
+                loadUserData(); // Refresh the table
+                javax.swing.JOptionPane.showMessageDialog(this, "Balance updated!");
+
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+                } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }//GEN-LAST:event_btnAddBalanceActionPerformed
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -177,6 +192,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddBalance;
     private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
