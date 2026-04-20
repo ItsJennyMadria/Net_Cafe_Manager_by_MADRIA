@@ -29,7 +29,6 @@ public class DashBoardFrame extends javax.swing.JFrame {
         lblWelcome.setText("Welcome, " + username);
     }
 
-    // 2. The actual METHOD goes HERE (outside the constructor)
     private void loadUserData() {
         try (java.sql.Connection conn = DatabaseConnection.connect()) {
             String sql = "SELECT USER_NAME, User_BALANCE, ROLE, MEMBER_STATUS FROM users";
@@ -135,12 +134,12 @@ public class DashBoardFrame extends javax.swing.JFrame {
             try (java.sql.Connection conn = DatabaseConnection.connect()) {
                 String sql = "DELETE FROM users WHERE USER_NAME = ?";
                 java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, this.username); // Deletes YOU
+                pstmt.setString(1, this.username);
 
                 int deleted = pstmt.executeUpdate();
                 if (deleted > 0) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Account deleted. Goodbye!");
-                    new LoginFrame().setVisible(true); // Send back to login
+                    new LoginFrame().setVisible(true);
                     this.dispose();
                 }
             } catch (Exception e) {
@@ -161,10 +160,10 @@ public class DashBoardFrame extends javax.swing.JFrame {
                 java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
 
                 pstmt.setDouble(1, Double.parseDouble(input));
-                pstmt.setString(2, this.username); // Always updates the logged-in user
+                pstmt.setString(2, this.username);
 
                 pstmt.executeUpdate();
-                loadUserData(); // Refresh the table
+                loadUserData();
                 javax.swing.JOptionPane.showMessageDialog(this, "Balance updated!");
 
             } catch (Exception e) {
@@ -175,16 +174,14 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
-// 1. Show the goodbye message
+
         javax.swing.JOptionPane.showMessageDialog(this,
                 "Goodbye, " + username + "! Come again soon.",
                 "Logging Out",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-        // 2. Open the Login Frame
+        
         new LoginFrame().setVisible(true);
-
-        // 3. Close the Dashboard
+        
         this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
