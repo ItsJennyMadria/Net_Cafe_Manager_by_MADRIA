@@ -31,6 +31,7 @@ public class LoginFrame extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,7 +56,12 @@ public class LoginFrame extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 300, 200, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 200, 40));
+
+        jLabel2.setFont(new java.awt.Font("Imprint MT Shadow", 2, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Dont have an account? Click below!");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 190, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/login resized.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -155,6 +161,7 @@ this.dispose();
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
