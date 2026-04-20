@@ -78,14 +78,18 @@ public class DashBoardFrame extends javax.swing.JFrame {
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 450, 50));
 
+        btnDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setText("DELETE MY ACCOUNT");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 350, 170, -1));
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 350, 180, 30));
 
+        tblUsers.setBackground(new java.awt.Color(255, 163, 110));
+        tblUsers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -101,21 +105,25 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 540, 250));
 
+        btnAddBalance.setBackground(new java.awt.Color(153, 255, 153));
+        btnAddBalance.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAddBalance.setText("TOPUP");
         btnAddBalance.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddBalanceActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAddBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 350, 120, 20));
+        getContentPane().add(btnAddBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, 120, 30));
 
+        btnLogout.setBackground(new java.awt.Color(255, 0, 255));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLogout.setText("LOGOUT");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogoutActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, -1, -1));
+        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(579, 10, 80, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/For DASHBOARD.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
