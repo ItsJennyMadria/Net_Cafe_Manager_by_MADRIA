@@ -50,7 +50,7 @@ public class RegisterFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Lucida Fax", 1, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(224, 247, 250));
         jLabel2.setText("CLOUD NOOK");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 360, 60));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 360, 60));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/NET CAFE BACKGROUND GIF resized.gif"))); // NOI18N

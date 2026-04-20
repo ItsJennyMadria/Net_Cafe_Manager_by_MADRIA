@@ -68,6 +68,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
         btnAddBalance = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,16 +77,15 @@ public class DashBoardFrame extends javax.swing.JFrame {
         lblWelcome.setFont(new java.awt.Font("Lucida Fax", 1, 36)); // NOI18N
         lblWelcome.setForeground(new java.awt.Color(204, 204, 204));
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblWelcome.setText("jLabel2");
-        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+        getContentPane().add(lblWelcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 450, 50));
 
-        btnDelete.setText("DELETE");
+        btnDelete.setText("DELETE MY ACCOUNT");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, -1));
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 350, 170, -1));
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,12 +95,12 @@ public class DashBoardFrame extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Username", "Balance", "Role", "Status"
             }
         ));
         jScrollPane1.setViewportView(tblUsers);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 360, 250));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 540, 250));
 
         btnAddBalance.setText("TOPUP");
         btnAddBalance.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +108,15 @@ public class DashBoardFrame extends javax.swing.JFrame {
                 btnAddBalanceActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAddBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, -1));
+        getContentPane().add(btnAddBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 350, 120, 20));
+
+        btnLogout.setText("LOGOUT");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net_cafe_manager_by_madria/resources/For DASHBOARD.gif"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -161,11 +169,24 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-                } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }//GEN-LAST:event_btnAddBalanceActionPerformed
         }
     }
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+// 1. Show the goodbye message
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Goodbye, " + username + "! Come again soon.",
+                "Logging Out",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // 2. Open the Login Frame
+        new LoginFrame().setVisible(true);
+
+        // 3. Close the Dashboard
+        this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,7 +207,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DashBoardFrame("Admin", "TestUser").setVisible(true);
+                new DashBoardFrame("User", "Guest").setVisible(true);
             }
         });
     }
@@ -194,6 +215,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddBalance;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblWelcome;
